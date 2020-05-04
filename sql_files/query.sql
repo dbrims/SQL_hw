@@ -41,7 +41,7 @@ LIMIT 5;
 SELECT m.name,  mc.cat_name, COUNT(amount)
 FROM transactions AS t
 JOIN merchant AS m ON t.merchant_id=m.id
-JOIN merchant_catagory AS mc ON m.id_merchant_catagory=mc.id
+	JOIN merchant_catagory AS mc ON m.id_merchant_catagory=mc.id
 WHERE amount<=2.00
 GROUP BY  mc.cat_name, m.name
 ORDER BY COUNT(amount) DESC, m.name;
@@ -49,7 +49,7 @@ ORDER BY COUNT(amount) DESC, m.name;
 SELECT t.card,  mc.cat_name, COUNT(amount)
 FROM transactions as t
 JOIN merchant AS m ON t.merchant_id=m.id
-JOIN merchant_catagory AS mc ON m.id_merchant_catagory=mc.id
+	JOIN merchant_catagory AS mc ON m.id_merchant_catagory=mc.id
 WHERE amount<=2.00
 GROUP BY t.card,  mc.cat_name
 ORDER BY t.card;
@@ -94,7 +94,7 @@ CREATE VIEW small_trans_cat AS
 	GROUP BY  cat_name, name
 	ORDER BY  COUNT(amount) DESC, name;
 
-	CREATE VIEW small_trans_cat_card AS
+CREATE VIEW small_trans_cat_card AS
 	SELECT card,  cat_name, COUNT(amount)
 	FROM merch_joined
 	WHERE amount<=2.00
