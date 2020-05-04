@@ -1,8 +1,15 @@
 ALTER TABLE merchant_catagory
 RENAME COLUMN name TO cat_name;
 
---many of these transactions are from bars/pubs, which this early in the morning would raise a red flag
+SELECT t.date, t.amount, t.card, cc.card_holder
+FROM transactions AS t
+JOIN credit_card AS cc on t.card like 
+CONCAT(SUBSTRING(CAST(CAST(cc.card AS BIGINT) AS VARCHAR(100)),1,4),'%')
+ORDER BY cc.card_holder;
 
+
+
+--many of these transactions are from bars/pubs, which this early in the morning would raise a red flag
 SELECT t.id, t.date, t.amount, t.card, m.name, mc.cat_name
 FROM transactions AS t
 JOIN merchant AS m ON t.merchant_id=m.id
@@ -37,7 +44,7 @@ JOIN merchant AS m ON t.merchant_id=m.id
 JOIN merchant_catagory as mc ON m.id_merchant_catagory=mc.id
 WHERE amount<=2.00
 GROUP BY  mc.cat_name, m.name
-ORDER BY  mc.cat_name, COUNT(amount) DESC;
+ORDER BY COUNT(amount) DESC, m.name;
 
 SELECT t.card,  mc.cat_name, COUNT(amount)
 FROM transactions as t
@@ -82,7 +89,7 @@ SELECT name,  cat_name, COUNT(amount)
 FROM merch_joined
 WHERE amount<=2.00
 GROUP BY  cat_name, name
-ORDER BY  cat_name, COUNT(amount) DESC;
+ORDER BY  COUNT(amount) DESC, name;
 
 SELECT card,  cat_name, COUNT(amount)
 FROM merch_joined
